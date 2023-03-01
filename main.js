@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // Camera
 			const scene = new THREE.Scene();
-			const camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			const camera = new THREE.PerspectiveCamera( 79, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 			const renderer = new THREE.WebGLRenderer({
         canvas:document.querySelector('#bg'),
@@ -15,6 +15,10 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.position.setZ(30);
+      camera.position.setX(-3);
 
 // Gltf file
 
@@ -52,13 +56,7 @@ const torus2 = new THREE.Mesh(new THREE.TorusGeometry( 14, 1.7, 4, 50  ), new TH
 
 			scene.add( torus );
       scene.add( torus2 );
-
-      
-
-			renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.position.setZ(30);
-      camera.position.setX(-3);
+			
 
 // Lights
 
@@ -97,8 +95,8 @@ const spaceTexture = new THREE.TextureLoader().load('images/space.jpg');
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
   
-  torus2.rotation.y += 0.075;
-  torus2.rotation.z += 0.05;
+  torus2.rotation.y += 0.01;
+  torus2.rotation.z += 0.01;
 
 
   camera.position.z = t * -0.01;
@@ -110,13 +108,11 @@ document.body.onscroll = moveCamera;
 moveCamera();
 
 
-
-
 function animate() {
   requestAnimationFrame(animate);
  
-        torus2.rotation.x+= 0.001;
-        torus2.rotation.z -= 0.001;
+        torus2.rotation.y += 0.01;
+        torus2.rotation.z += 0.01;
         
         torus.rotation.z -= 0.002;
         torus.rotation.y -= 0.002;
