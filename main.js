@@ -20,7 +20,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // const loader = new GLTFLoader();
 
-// loader.load( 'donut.glb', function ( gltf ) {
+// loader.load( 'ast.glb', function ( gltf ) {
 
 // 	scene.add( gltf.scene );
 
@@ -43,11 +43,11 @@ scene.add(heat);
 
 const torusTexture = new THREE.TextureLoader().load('images/ast.jpg');
 
-const torus = new THREE.Mesh(new THREE.TorusGeometry( 8, 1.7, 94, 50  ), new THREE.MeshBasicMaterial({ map: torusTexture }));
+const torus = new THREE.Mesh(new THREE.TorusGeometry( 8, 1.7, 4, 50  ), new THREE.MeshBasicMaterial({ map: torusTexture }));
       
 const torus2Texture = new THREE.TextureLoader().load('images/ast.jpg');
 
-const torus2 = new THREE.Mesh(new THREE.TorusGeometry( 14, 1.7, 94, 50  ), new THREE.MeshBasicMaterial({ map: torus2Texture }));
+const torus2 = new THREE.Mesh(new THREE.TorusGeometry( 14, 1.7, 4, 50  ), new THREE.MeshBasicMaterial({ map: torus2Texture }));
       
 
 			scene.add( torus );
@@ -60,7 +60,7 @@ const torus2 = new THREE.Mesh(new THREE.TorusGeometry( 14, 1.7, 94, 50  ), new T
       camera.position.setZ(30);
       camera.position.setX(-3);
 
-      // Lights
+// Lights
 
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(2, 5, 5);
@@ -72,7 +72,7 @@ scene.add(pointLight, ambientLight);
 
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const material = new THREE.MeshStandardMaterial({ color: 0xF9E79F });
   const star = new THREE.Mesh(geometry, material);
 
   const [x, y, z] = Array(3)
@@ -85,16 +85,21 @@ function addStar() {
 
 Array(200).fill().forEach(addStar);
 
+
+// Background
+
+const spaceTexture = new THREE.TextureLoader().load('images/space.jpg');
+  scene.background = spaceTexture;
+
+
 // Scroll Animation
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  torus.rotation.x += 0.05;
+  
   torus2.rotation.y += 0.075;
   torus2.rotation.z += 0.05;
 
-  heat.rotation.y += 0.01;
-  heat.rotation.z += 0.01;
 
   camera.position.z = t * -0.01;
   camera.position.x = t * -0.0002;
@@ -105,27 +110,19 @@ document.body.onscroll = moveCamera;
 moveCamera();
 
 
-// Background
-
-const spaceTexture = new THREE.TextureLoader().load('images/space.jpg');
-  scene.background = spaceTexture;
-    
-    
-
 
 
 function animate() {
   requestAnimationFrame(animate);
+ 
+        torus2.rotation.x+= 0.001;
+        torus2.rotation.z -= 0.001;
+        
+        torus.rotation.z -= 0.002;
+        torus.rotation.y -= 0.002;
 
-				torus.rotation.x -= 0.04;
-				torus.rotation.y += 0.04;
-
-        torus2.rotation.x -= 0.02;
-        torus2.rotation.y += 0.02;
-			
-
-        heat.rotation.y += 0.03;
-        heat.rotation.x += 0.03;
+        heat.rotation.y += 0.001;
+        heat.rotation.x += 0.001;
 
         renderer.render(scene, camera);
       
